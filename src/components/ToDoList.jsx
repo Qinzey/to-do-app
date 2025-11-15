@@ -1,14 +1,146 @@
-import Item from './Item';
+import React from "react";
+import trash from "../images/trash.webp"
+import pencil from "../images/pencil.webp"
 
-function ToDoList({ todos }) {
-    return (
-        <ol className="todo_list">
-            {todos && todos.length > 0 ? (
-            todos?.map((item, index) => <Item key={index} item={item} />)
-            ) : (
-            <p>Nothing added.</p>
-            )}
-        </ol>
-    );
+function TODOList({ todos, setTodos }) {
+  return (
+    <ol className="todo_list">
+      {todos && todos.length > 0 ? (
+        todos?.map((item, index) => (
+          <Item key={index} item={item} todos={todos} setTodos={setTodos} />
+        ))
+      ) : (
+        <p>No items.</p>
+      )}
+    </ol>
+  );
 }
-export default ToDoList;
+
+function Item({ item, todos, setTodos }) {
+  const [editing, setEditing] = React.useState(false);
+  const inputRef = React.useRef(null);
+
+  const completeTodo = () => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === item.id
+          ? { ...todo, is_completed: !todo.is_completed }
+          : todo
+      )
+    );
+
+    // Update localStorage after marking todo as completed
+    const updatedTodos = JSON.stringify(todos);
+    localStorage.setItem("todos", updatedTodos);
+  };
+
+  const handleEdit = () => {
+    setEditing(true);
+  };
+
+  React.useEffect(() => {
+    if (editing && inputRef.current) {
+      inputRef.current.focus();
+
+      // position the cursor at the end of the text
+      inputRef.current.setSelectionRange(
+        inputRef.current.value.length,
+        inputRef.current.value.length
+      );
+    }
+  }, [editing]);
+
+  const handleInputChange = (e) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === item.id ? { ...todo, title: e.target.value } : todo
+      )
+    );
+  };
+
+  const handleInpuSubmit = (event) => {
+    event.preventDefault();
+
+    // Update localStorage after editing todo
+    const updatedTodos = JSON.stringify(todos);
+    localStorage.setItem("todos", updatedTodos);
+
+    setEditing(false);
+  };
+
+  const handleInputBlur = () => {
+    // Update localStorage after editing todo
+    const updatedTodos = JSON.stringify(todos);
+    localStorage.setItem("todos", updatedTodos);
+
+    setEditing(false);
+  };
+
+  const handleDelete = () => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== item.id));
+
+    // Update localStorage after deleting todo
+    const updatedTodos = JSON.stringify(
+      todos.filter((todo) => todo.id !== item.id)
+    );
+    localStorage.setItem("todos", updatedTodos);
+  };
+
+  return (
+    <li id={item?.id} className="todo_item">
+      {editing ? (
+        <form className="edit-form" onSubmit={handleInpuSubmit}>
+          <label htmlFor="edit-todo">
+            <input
+              ref={inputRef}
+              type="text"
+              name="edit-todo"
+              id="edit-todo"
+              defaultValue={item?.title}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
+            />
+          </label>
+        </form>
+      ) : (
+        <>
+          <button className="todo_items_left" onClick={completeTodo}>
+            <svg
+              clipRule="evenodd"
+              fillRule="evenodd"
+              strokeLinejoin="round"
+              strokeMiterlimit="2"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              width={34}
+              height={34}
+              stroke="#ffd1dc"
+              fill={item.is_completed ? "#ffd1dc" : "#0d0d0d"}
+            >
+              <circle cx="11.998" cy="11.998" fillRule="nonzero" r="9.998" />
+            </svg>
+            <p
+              style={
+                item.is_completed ? { textDecoration: "line-through" } : {}
+              }
+            >
+              {item?.title}
+            </p>
+          </button>
+          <div className="todo_items_right">
+            <button style={{ width: 32, height: 32 }} onClick={handleEdit}>
+              <span className="visually-hidden">Edit</span>
+                <img src={pencil} width={32} height={32} alt="pencil" />
+            </button>
+            <button style={{ width: 32, height: 32 }} onClick={handleDelete}>
+                <span className="visually-hidden">Delete</span>
+                <img src={trash} width={32} height={32} alt="trash" />
+            </button>
+          </div>
+        </>
+      )}
+    </li>
+  );
+}
+
+export default TODOList;

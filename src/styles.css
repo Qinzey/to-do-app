@@ -6,6 +6,7 @@
   font-family: inherit;
   box-sizing: border-box;
 }
+
 html,
 body {
   font-family: sans-serif;
@@ -16,9 +17,11 @@ body {
   justify-content: center;
   width: 100vw;
 }
+
 button {
   cursor: pointer;
 }
+
 .visually-hidden {
   position: absolute !important;
   clip: rect(1px, 1px, 1px, 1px);
@@ -29,12 +32,14 @@ button {
   overflow: hidden;
   white-space: nowrap;
 }
+
 .text_large {
   font-size: 32px;
 }
 .text_small {
   font-size: 24px;
 }
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -48,6 +53,7 @@ button {
     justify-content: center;
   }
 }
+
 header {
   display: flex;
   align-items: center;
@@ -55,6 +61,30 @@ header {
   gap: 12px;
   padding: 42px;
 }
+
+.todohero_section {
+  border: 1px solid #f2d5a4;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  align-self: center;
+  width: 90%;
+  max-width: 455px;
+  padding: 12px;
+  border-radius: 11px;
+}
+.todohero_section div:last-child {
+  background-color: #ffd1dc;
+  width: 150px;
+  height: 150px;
+  border-radius: 75px;
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .form {
   align-self: center;
   width: 97%;
@@ -81,9 +111,10 @@ header {
   width: 10%;
   height: 50px;
   border-radius: 11px;
-  background-color: #88ab33;
+  background-color: #ffd1dc;
   border: none;
 }
+
 .todo_list {
   align-self: center;
   width: 97%;
@@ -103,18 +134,20 @@ header {
   height: 70px;
   width: 100%;
   max-width: 455px;
-  border: 1px solid #c2b39a;
+  border: 1px solid #f2d5a4;
   font-size: 16px;
   background-color: #0d0d0d;
   color: #fff;
   padding: 12px;
 }
+
 .edit-form input {
   outline: transparent;
   width: calc(100% - 14px);
   height: calc(100% - 12px);
   border: transparent;
 }
+
 .todo_items_left,
 .todo_items_right {
   display: flex;
@@ -135,6 +168,7 @@ header {
   color: #fff;
   border: none;
 }
+
 .todo_items_right button svg {
-  fill: #c2b39a;
+  fill: #f2d5a4;
 }
